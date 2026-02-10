@@ -1,5 +1,6 @@
 "use client";
 
+import { Bird } from "@/components/bird";
 import { CreateRoomModal } from "@/components/create-room-modal";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
@@ -13,13 +14,14 @@ const RoomsPage: FC = () => {
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6 p-4 text-center">
-      <Image
+      {/* <Image
         src="/images/bird.svg"
         alt="Welcome"
         width={300}
         height={300}
         priority
-      />
+      /> */}
+      <Bird />
       <div className="max-w-md space-y-4">
         <h1 className="text-4xl font-bold tracking-tight">Добро пожаловать</h1>
         <p className="text-lg text-muted-foreground">

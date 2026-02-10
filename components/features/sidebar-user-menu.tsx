@@ -10,7 +10,7 @@ import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { UserAvatar } from "@/components/user-avatar";
 import { IProfileDTO } from "@/lib/api/auth";
 import { logoutAction } from "@/lib/actions/logoutAction";
-import {  LogOut, MoreVertical, Settings } from "lucide-react";
+import { LogOut, MoreVertical, Settings } from "lucide-react";
 import { FC } from "react";
 
 interface SidebarUserMenuProps {
