@@ -8,6 +8,8 @@ import {
   useContext,
   useState,
   useCallback,
+  useMemo,
+  useRef,
 } from "react";
 import { useProfileData } from "./profile-provider";
 import { useRoomEvents } from "@/lib/hooks/use-room-events";
@@ -41,7 +43,23 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
 }) => {
   const { profile: { id: userId } } = useProfileData()
 
+  const audioJoin = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioJoin.current = new Audio("/sounds/notification_join.mp3");
+  }, []);
+
   const [members, setMembers] = useState<IRoomMemberDTO[]>(() => initialMembers);
+
+  const sortedMembers = useMemo(() => {
+    return [...members].sort((a, b) => {
+      if (a.userId === userId) return -1;
+      if (b.userId === userId) return 1;
+      if (a.status === ROOM_MEMBER_STATUS.ONLINE && b.status !== ROOM_MEMBER_STATUS.ONLINE) return -1;
+      if (a.status !== ROOM_MEMBER_STATUS.ONLINE && b.status === ROOM_MEMBER_STATUS.ONLINE) return 1;
+      return 0;
+    });
+  }, [members, userId]);
 
   const { initMediasoup, initConsuming, startProducing, remoteStreams, toggleMic, isMuted } = useMediasoup(roomId);
 
@@ -62,6 +80,7 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
     if (payload.userId !== userId) {
       if (payload.status === ROOM_MEMBER_STATUS.ONLINE) {
         toast.info(`${payload.user.name} снова с нами`);
+        audioJoin.current?.play().catch((e) => console.error("Failed to play join sound", e));
       } else if (payload.status === ROOM_MEMBER_STATUS.OFFLINE) {
         toast.info(`${payload.user.name} покинул комнату`);
       }
@@ -88,7 +107,7 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
     <RoomContext.Provider
       value={{
         room,
-        members,
+        members: sortedMembers,
         roomId,
         remoteStreams,
         startProducing,

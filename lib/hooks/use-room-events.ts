@@ -40,7 +40,7 @@ export const useRoomEvents = ({
       socket.emit(SOCKET_EVENTS.LEAVE_ROOM, payload);
       socket.off(SOCKET_EVENTS.MEMBER_STATUS_CHANGED, handleStatusChange);
     };
-  }, [socket, roomId, userId, onMemberStatusChanged]);
+  }, [socket, roomId]);
 
   const updateStatus = (status: TRoomMemberStatus) => {
     if (!socket) return;
