@@ -1,3 +1,4 @@
+import { RoomAudioRenderer } from "@/components/room-audio-renderer";
 import { RoomCallControls } from "@/components/room-call-controls";
 import { RoomParticipantsList } from "@/components/room-participants-list";
 import { RoomProvider } from "@/components/providers/room-provider";
@@ -33,6 +34,7 @@ const RoomLayout: FC<PropsWithChildren<IRoomLayoutProps>> = async ({
           <div className="p-4 shrink-0">
             <h2 className="text-lg font-semibold">{room.name}</h2>
           </div>
+          <RoomAudioRenderer />
           <div className="flex-1 min-h-0">{children}</div>
         </div>
       </div>

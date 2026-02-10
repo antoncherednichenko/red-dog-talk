@@ -11,12 +11,18 @@ import {
 } from "react";
 import { useProfileData } from "./profile-provider";
 import { useRoomEvents } from "@/lib/hooks/use-room-events";
+import { useMediasoup } from "@/lib/hooks/use-mediasoup";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 interface IRoomContext {
   room: IRoomDTO;
   members: IRoomMemberDTO[];
   roomId: string;
+  remoteStreams: { id: string; stream: MediaStream; kind: "video" | "audio" }[];
+  startProducing: () => Promise<void>;
+  toggleMic: () => void;
+  isMuted: boolean;
 }
 
 const RoomContext = createContext<IRoomContext | null>(null);
@@ -36,6 +42,21 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
   const { profile: { id: userId } } = useProfileData()
 
   const [members, setMembers] = useState<IRoomMemberDTO[]>(() => initialMembers);
+
+  const { initMediasoup, initConsuming, startProducing, remoteStreams, toggleMic, isMuted } = useMediasoup(roomId);
+
+  useEffect(() => {
+    const init = async () => {
+        try {
+            await initMediasoup();
+            await initConsuming();
+            await startProducing();
+        } catch (e) {
+            console.error("Failed to init mediasoup", e);
+        }
+    }
+    init();
+  }, [initMediasoup, initConsuming, startProducing]);
 
   const handleMemberStatusChanged = useCallback((payload: IRoomMemberDTO) => {
     if (payload.userId !== userId) {
@@ -69,6 +90,10 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
         room,
         members,
         roomId,
+        remoteStreams,
+        startProducing,
+        toggleMic,
+        isMuted
       }}
     >
       {children}
