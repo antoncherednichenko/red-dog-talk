@@ -9,7 +9,8 @@ import {
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { UserAvatar } from "@/components/user-avatar";
 import { IProfileDTO } from "@/lib/api/auth";
-import { ChevronsUpDown, LogOut, MoreVertical, Settings } from "lucide-react";
+import { logoutAction } from "@/lib/actions/logoutAction";
+import {  LogOut, MoreVertical, Settings } from "lucide-react";
 import { FC } from "react";
 
 interface SidebarUserMenuProps {
@@ -53,7 +54,10 @@ export const SidebarUserMenu: FC<SidebarUserMenuProps> = ({ profile }) => {
             <Settings />
             Настройки
           </DropdownMenuItem>
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem
+            variant="destructive"
+            onSelect={() => logoutAction()}
+          >
             <LogOut />
             Выход
           </DropdownMenuItem>

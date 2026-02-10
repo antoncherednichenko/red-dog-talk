@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useToggle } from "@/lib/hooks/useToggle";
 import { MessageSquarePlus } from "lucide-react";
+import Image from "next/image";
 import { FC } from "react";
 
 const RoomsPage: FC = () => {
@@ -12,6 +13,13 @@ const RoomsPage: FC = () => {
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6 p-4 text-center">
+      <Image
+        src="/images/bird.svg"
+        alt="Welcome"
+        width={300}
+        height={300}
+        priority
+      />
       <div className="max-w-md space-y-4">
         <h1 className="text-4xl font-bold tracking-tight">Добро пожаловать</h1>
         <p className="text-lg text-muted-foreground">

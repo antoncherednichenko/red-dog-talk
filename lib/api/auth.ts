@@ -34,6 +34,12 @@ export const loginUser = async (body: ILoginDTO) => {
   });
 };
 
+export const logoutUser = async () => {
+  return await serverApi(API_ENDPOINTS.Logout, {
+    method: "POST",
+  });
+};
+
 export const getProfile = async () => {
   return await serverApi<IProfileDTO>(API_ENDPOINTS.Profile, {
     method: "GET",
