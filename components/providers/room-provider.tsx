@@ -41,7 +41,9 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
   initialMembers,
   roomId,
 }) => {
-  const { profile: { id: userId } } = useProfileData()
+  const {
+    profile: { id: userId },
+  } = useProfileData();
 
   const audioJoin = useRef<HTMLAudioElement | null>(null);
 
@@ -49,53 +51,75 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
     audioJoin.current = new Audio("/sounds/notification_join.mp3");
   }, []);
 
-  const [members, setMembers] = useState<IRoomMemberDTO[]>(() => initialMembers);
+  const [members, setMembers] = useState<IRoomMemberDTO[]>(
+    () => initialMembers,
+  );
 
   const sortedMembers = useMemo(() => {
     return [...members].sort((a, b) => {
       if (a.userId === userId) return -1;
       if (b.userId === userId) return 1;
-      if (a.status === ROOM_MEMBER_STATUS.ONLINE && b.status !== ROOM_MEMBER_STATUS.ONLINE) return -1;
-      if (a.status !== ROOM_MEMBER_STATUS.ONLINE && b.status === ROOM_MEMBER_STATUS.ONLINE) return 1;
+      if (
+        a.status === ROOM_MEMBER_STATUS.ONLINE &&
+        b.status !== ROOM_MEMBER_STATUS.ONLINE
+      )
+        return -1;
+      if (
+        a.status !== ROOM_MEMBER_STATUS.ONLINE &&
+        b.status === ROOM_MEMBER_STATUS.ONLINE
+      )
+        return 1;
       return 0;
     });
   }, [members, userId]);
 
-  const { initMediasoup, initConsuming, startProducing, remoteStreams, toggleMic, isMuted } = useMediasoup(roomId);
+  const {
+    initMediasoup,
+    initConsuming,
+    startProducing,
+    remoteStreams,
+    toggleMic,
+    isMuted,
+  } = useMediasoup(roomId);
 
   useEffect(() => {
     const init = async () => {
-        try {
-            await initMediasoup();
-            await initConsuming();
-            await startProducing();
-        } catch (e) {
-            console.error("Failed to init mediasoup", e);
-        }
-    }
+      try {
+        await initMediasoup();
+        await initConsuming();
+        await startProducing();
+      } catch (e) {
+        console.error("Failed to init mediasoup", e);
+      }
+    };
     init();
   }, [initMediasoup, initConsuming, startProducing]);
 
-  const handleMemberStatusChanged = useCallback((payload: IRoomMemberDTO) => {
-    if (payload.userId !== userId) {
-      if (payload.status === ROOM_MEMBER_STATUS.ONLINE) {
-        toast.info(`${payload.user.name} снова с нами`);
-        audioJoin.current?.play().catch((e) => console.error("Failed to play join sound", e));
-      } else if (payload.status === ROOM_MEMBER_STATUS.OFFLINE) {
-        toast.info(`${payload.user.name} покинул комнату`);
+  const handleMemberStatusChanged = useCallback(
+    (payload: IRoomMemberDTO) => {
+      if (payload.userId !== userId) {
+        if (payload.status === ROOM_MEMBER_STATUS.ONLINE) {
+          toast.info(`${payload.user.name} снова с нами`);
+          audioJoin.current
+            ?.play()
+            .catch((e) => console.error("Failed to play join sound", e));
+        } else if (payload.status === ROOM_MEMBER_STATUS.OFFLINE) {
+          toast.info(`${payload.user.name} покинул комнату`);
+        }
       }
-    }
 
-    setMembers((prev) => {
-      const exists = prev.find((m) => m.userId === payload.userId);
-      if (exists) {
-        return prev.map((member) =>
-          member.userId === payload.userId ? payload : member
-        );
-      }
-      return [...prev, payload];
-    });
-  }, [userId]);
+      setMembers((prev) => {
+        const exists = prev.find((m) => m.userId === payload.userId);
+        if (exists) {
+          return prev.map((member) =>
+            member.userId === payload.userId ? payload : member,
+          );
+        }
+        return [...prev, payload];
+      });
+    },
+    [userId],
+  );
 
   useRoomEvents({
     roomId,
@@ -112,7 +136,7 @@ export const RoomProvider: FC<PropsWithChildren<RoomProviderProps>> = ({
         remoteStreams,
         startProducing,
         toggleMic,
-        isMuted
+        isMuted,
       }}
     >
       {children}

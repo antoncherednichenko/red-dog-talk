@@ -1,5 +1,6 @@
 "use client";
 import { CreateRoomModal } from "@/components/create-room-modal";
+import { SidebarRoomsEmptyState } from "@/components/sidebar-rooms-empty-state";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,28 +20,10 @@ import { IProfileDTO } from "@/lib/api/auth";
 import { IRoomListItem, ROOM_TYPE } from "@/lib/api/rooms";
 import { PROTECTED_ROUTES } from "@/lib/constants/routes";
 import { useToggle } from "@/lib/hooks/useToggle";
-import {
-  ChevronsUpDown,
-  LogOut,
-  MessageSquare,
-  Mic,
-  Plus,
-  Search,
-  Settings,
-  Video,
-} from "lucide-react";
+import { Mic, Plus, Search, Video } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC, useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { UserAvatar } from "./user-avatar";
 import { SidebarUserMenu } from "./features/sidebar-user-menu";
 
 interface ISideBarProps {
@@ -95,21 +78,28 @@ export const AppSidebar: FC<ISideBarProps> = ({ profile, rooms }) => {
           </Dialog>
 
           <SidebarGroupContent className="mt-2">
-            <SidebarMenu>
-              {filteredRooms.map((room) => {
-                const roomPath = `${PROTECTED_ROUTES.Rooms}/${room.id}`;
-                return (
-                  <SidebarMenuItem key={room.id}>
-                    <SidebarMenuButton asChild isActive={pathname === roomPath}>
-                      <Link href={roomPath}>
-                        {room.type === ROOM_TYPE.Audio ? <Mic /> : <Video />}
-                        <span>{room.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
+            {filteredRooms.length === 0 ? (
+              <SidebarRoomsEmptyState onAction={toggleOpen} />
+            ) : (
+              <SidebarMenu>
+                {filteredRooms.map((room) => {
+                  const roomPath = `${PROTECTED_ROUTES.Rooms}/${room.id}`;
+                  return (
+                    <SidebarMenuItem key={room.id}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={pathname === roomPath}
+                      >
+                        <Link href={roomPath}>
+                          {room.type === ROOM_TYPE.Audio ? <Mic /> : <Video />}
+                          <span>{room.name}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            )}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

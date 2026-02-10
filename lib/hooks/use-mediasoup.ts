@@ -26,7 +26,7 @@ export const useMediasoup = (roomId: string) => {
           transportId: recvTransportRef.current.id,
           producerId,
           rtpCapabilities,
-        }
+        },
       );
 
       const consumer = await recvTransportRef.current.consume({
@@ -45,7 +45,7 @@ export const useMediasoup = (roomId: string) => {
         consumerId: id,
       });
     },
-    [socket]
+    [socket],
   );
 
   const initConsuming = useCallback(async () => {
@@ -53,12 +53,11 @@ export const useMediasoup = (roomId: string) => {
 
     const transportParams = await socket.emitWithAck(
       SOCKET_EVENTS.MEDIASOUP_CREATE_TRANSPORT,
-      { roomId }
+      { roomId },
     );
 
-    recvTransportRef.current = deviceRef.current.createRecvTransport(
-      transportParams
-    );
+    recvTransportRef.current =
+      deviceRef.current.createRecvTransport(transportParams);
 
     recvTransportRef.current.on(
       "connect",
@@ -72,7 +71,7 @@ export const useMediasoup = (roomId: string) => {
         } catch (error: any) {
           errback(error);
         }
-      }
+      },
     );
 
     socket.on(
@@ -80,7 +79,7 @@ export const useMediasoup = (roomId: string) => {
       async ({ producerId, socketId }) => {
         if (socketId === socket.id) return;
         await consumeProducer(producerId);
-      }
+      },
     );
   }, [socket, roomId, consumeProducer]);
 
@@ -89,12 +88,11 @@ export const useMediasoup = (roomId: string) => {
 
     const transportParams = await socket.emitWithAck(
       SOCKET_EVENTS.MEDIASOUP_CREATE_TRANSPORT,
-      { roomId }
+      { roomId },
     );
 
-    sendTransportRef.current = deviceRef.current.createSendTransport(
-      transportParams
-    );
+    sendTransportRef.current =
+      deviceRef.current.createSendTransport(transportParams);
 
     sendTransportRef.current.on(
       "connect",
@@ -108,7 +106,7 @@ export const useMediasoup = (roomId: string) => {
         } catch (error: any) {
           errback(error);
         }
-      }
+      },
     );
 
     sendTransportRef.current.on(
@@ -122,13 +120,13 @@ export const useMediasoup = (roomId: string) => {
               kind,
               rtpParameters,
               roomId,
-            }
+            },
           );
           callback({ id });
         } catch (error: any) {
           errback(error);
         }
-      }
+      },
     );
 
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -164,7 +162,7 @@ export const useMediasoup = (roomId: string) => {
 
     const routerRtpCapabilities = await socket.emitWithAck(
       SOCKET_EVENTS.MEDIASOUP_GET_CAPABILITIES,
-      { roomId }
+      { roomId },
     );
 
     await deviceRef.current.load({ routerRtpCapabilities });

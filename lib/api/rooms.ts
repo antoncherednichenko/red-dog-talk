@@ -69,9 +69,12 @@ export const getRoom = async (roomId: string) => {
 };
 
 export const getRoomMembers = async (roomId: string) => {
-  return await serverApi<IRoomMemberDTO[]>(`${API_ENDPOINTS.Rooms}/${roomId}/members`, {
-    method: "GET",
-  });
+  return await serverApi<IRoomMemberDTO[]>(
+    `${API_ENDPOINTS.Rooms}/${roomId}/members`,
+    {
+      method: "GET",
+    },
+  );
 };
 
 export const joinRoom = async (roomId: string) => {
