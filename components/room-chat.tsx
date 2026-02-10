@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Smile, Paperclip, MessageSquare } from "lucide-react";
+import { MessageSquare, Paperclip, Send, Smile } from "lucide-react";
 import { FC } from "react";
 
 export const RoomChat: FC = () => {
@@ -15,7 +16,7 @@ export const RoomChat: FC = () => {
       </ScrollArea>
 
       <div className="p-1">
-        <div className="flex items-center gap-2 rounded-md border border-border bg-card px-4 py-3">
+        <Card className="flex flex-row items-center gap-2 px-4 py-3">
           <Input
             placeholder="Сообщение"
             className="flex-1 !bg-transparent border-0 shadow-none focus-visible:ring-0 px-0"
@@ -31,7 +32,7 @@ export const RoomChat: FC = () => {
           <Button size="icon" variant="ghost">
             <Send className="h-5 w-5" />
           </Button>
-        </div>
+        </Card>
       </div>
     </div>
   );

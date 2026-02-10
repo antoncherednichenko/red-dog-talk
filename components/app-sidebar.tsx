@@ -45,12 +45,11 @@ export const AppSidebar: FC<ISideBarProps> = ({ profile, rooms }) => {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link
-              href={PROTECTED_ROUTES.Rooms}
-              className="flex items-center gap-2 px-2 py-1 font-semibold"
-            >
-              <span className="">Red dog talk</span>
-            </Link>
+            <SidebarMenuButton size="lg" asChild>
+              <Link href={PROTECTED_ROUTES.Rooms}>
+                <span className="font-semibold">Red dog talk</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         <div className="px-2">
