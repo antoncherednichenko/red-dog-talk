@@ -15,7 +15,7 @@ export const RoomChat: FC = () => {
       </ScrollArea>
 
       <div className="p-1">
-        <div className="flex items-center gap-2 rounded-md border border-border bg-background px-4 py-3">
+        <div className="flex items-center gap-2 rounded-md border border-border bg-card px-4 py-3">
           <Input
             placeholder="Сообщение"
             className="flex-1 !bg-transparent border-0 shadow-none focus-visible:ring-0 px-0"

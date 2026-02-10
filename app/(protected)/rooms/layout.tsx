@@ -28,7 +28,7 @@ const ProtectedLayout: FC<PropsWithChildren> = async ({ children }) => {
               <UserAvatar value={profile.email} size={32} />
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0 bg-muted/20">
+          <div className="flex flex-1 flex-col gap-4 p-4 pt-0 bg-background">
             {children}
           </div>
         </SidebarInset>

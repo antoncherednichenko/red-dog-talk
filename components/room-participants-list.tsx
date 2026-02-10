@@ -10,6 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import { UserAvatar } from "@/components/user-avatar";
 import { ROOM_MEMBER_STATUS } from "@/lib/api/rooms";
 import { Settings, UserPlus } from "lucide-react";
@@ -26,7 +31,7 @@ export const RoomParticipantsList: FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-background border rounded-xl overflow-hidden">
+    <div className="flex flex-col h-full bg-card border rounded-xl overflow-hidden">
       <div className="p-4 border-b flex items-center justify-between">
         <h2 className="text-lg font-semibold">Участники</h2>
         <div className="flex items-center gap-1">
@@ -51,35 +56,41 @@ export const RoomParticipantsList: FC = () => {
         </div>
       </div>
       <ScrollArea className="flex-1">
-        <div className="p-2 gap-2 flex flex-col">
+        <SidebarMenu className="p-2 gap-2">
           {members.map((member) => (
-            <div
-              key={member.user.id}
-              className="flex items-center gap-3 p-2 rounded-md hover:bg-sidebar-accent/10 cursor-pointer transition-colors"
-            >
-              <UserAvatar value={member.user.email} />
-              <div className="flex flex-1 items-center gap-2 overflow-hidden">
-                <span className="font-medium truncate">{member.user.name}</span>
-                <Badge
-                  variant={
-                    member.status === ROOM_MEMBER_STATUS.ONLINE
-                      ? "default"
-                      : "destructive"
-                  }
-                  className={
-                    member.status === ROOM_MEMBER_STATUS.ONLINE
-                      ? "bg-green-500/15 text-green-700 hover:bg-green-500/25 border-transparent"
-                      : ""
-                  }
-                >
-                  {member.status === ROOM_MEMBER_STATUS.ONLINE
-                    ? "online"
-                    : "offline"}
-                </Badge>
-              </div>
-            </div>
+            <SidebarMenuItem key={member.user.id}>
+              <SidebarMenuButton
+                className="h-auto px-2 py-1.5 gap-3"
+                asChild
+              >
+                <div className="cursor-pointer">
+                  <UserAvatar value={member.user.email} />
+                  <div className="flex flex-1 items-center gap-2 overflow-hidden">
+                    <span className="font-medium truncate">
+                      {member.user.name}
+                    </span>
+                    <Badge
+                      variant={
+                        member.status === ROOM_MEMBER_STATUS.ONLINE
+                          ? "default"
+                          : "destructive"
+                      }
+                      className={
+                        member.status === ROOM_MEMBER_STATUS.ONLINE
+                          ? "bg-green-500/15 text-green-700 hover:bg-green-500/25 border-transparent"
+                          : ""
+                      }
+                    >
+                      {member.status === ROOM_MEMBER_STATUS.ONLINE
+                        ? "online"
+                        : "offline"}
+                    </Badge>
+                  </div>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           ))}
-        </div>
+        </SidebarMenu>
       </ScrollArea>
     </div>
   );

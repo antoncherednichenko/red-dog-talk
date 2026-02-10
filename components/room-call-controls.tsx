@@ -9,7 +9,7 @@ export const RoomCallControls: FC = () => {
   const { toggleMic, isMuted } = useRoomData();
 
   return (
-    <div className="p-3 bg-background border rounded-xl flex items-center justify-center gap-4">
+    <div className="p-3 bg-card border rounded-xl flex items-center justify-center gap-4">
       <Button
         variant={isMuted ? "destructive" : "outline"}
         size="icon"
