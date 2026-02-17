@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useToggle } from "@/lib/hooks/useToggle";
 import { MessageSquarePlus } from "lucide-react";
-import Image from "next/image";
 import { FC } from "react";
 
 const RoomsPage: FC = () => {
