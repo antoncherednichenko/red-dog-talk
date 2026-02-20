@@ -41,7 +41,7 @@ export const AppSidebar: FC<ISideBarProps> = ({ profile, rooms }) => {
   // ) ?? [];
 
   console.log(rooms, 'rooms')
-  const filteredRooms = []
+  const filteredRooms = [] as IRoomListItem[]
 
   return (
     <Sidebar variant="inset">
