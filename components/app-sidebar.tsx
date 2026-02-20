@@ -36,9 +36,12 @@ export const AppSidebar: FC<ISideBarProps> = ({ profile, rooms }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, toggleOpen] = useToggle();
 
-  const filteredRooms = rooms?.filter((room) =>
-    room.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  ) ?? [];
+  // const filteredRooms = rooms?.filter((room) =>
+  //   room.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  // ) ?? [];
+
+  console.log(rooms, 'rooms')
+  const filteredRooms = []
 
   return (
     <Sidebar variant="inset">
