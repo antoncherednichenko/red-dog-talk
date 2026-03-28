@@ -12,27 +12,30 @@ import { io, Socket } from "socket.io-client";
 export const SocketContext = createContext<Socket | null>(null);
 
 export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket] = useState<Socket>(() =>
+    io(process.env.NEXT_PUBLIC_BASE_URL || "", {
+      transports: ["websocket"],
+    }),
+  );
 
   useEffect(() => {
-    const socketInstance = io(process.env.NEXT_PUBLIC_BASE_URL || "", {
-      transports: ["websocket"],
-    });
-
-    socketInstance.on("connect", () => {
+    const handleConnect = () => {
       console.log("Socket connected");
-    });
+    };
 
-    socketInstance.on("disconnect", () => {
+    const handleDisconnect = () => {
       console.log("Socket disconnected");
-    });
+    };
 
-    setSocket(socketInstance);
+    socket.on("connect", handleConnect);
+    socket.on("disconnect", handleDisconnect);
 
     return () => {
-      socketInstance.disconnect();
+      socket.off("connect", handleConnect);
+      socket.off("disconnect", handleDisconnect);
+      socket.disconnect();
     };
-  }, []);
+  }, [socket]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

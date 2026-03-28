@@ -1,7 +1,7 @@
 "use client";
 
 import * as jdenticon from "jdenticon";
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useMemo } from "react";
 
 interface UserAvatarProps {
   value: string;
@@ -20,7 +20,13 @@ export const UserAvatar: FC<UserAvatarProps> = ({ value, size = 32 }) => {
       width={size}
       height={size}
       alt="User avatar"
-      className="rounded-full bg-white border border-border shrink-0"
+      className="block shrink-0 rounded-full border border-border bg-white object-cover"
+      style={{
+        width: size,
+        height: size,
+        minWidth: size,
+        minHeight: size,
+      }}
     />
   );
 };

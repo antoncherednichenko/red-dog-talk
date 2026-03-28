@@ -1,4 +1,3 @@
-import { RoomAudioRenderer } from "@/components/room-audio-renderer";
 import { RoomCallControls } from "@/components/room-call-controls";
 import { RoomParticipantsList } from "@/components/room-participants-list";
 import { RoomProvider } from "@/components/providers/room-provider";
@@ -21,21 +20,17 @@ const RoomLayout: FC<PropsWithChildren<IRoomLayoutProps>> = async ({
 
   return (
     <RoomProvider room={room} roomId={slug} initialMembers={members}>
-      <div className="flex h-full gap-2 pt-4">
-        <div className="flex w-80 flex-col gap-2 shrink-0">
-          <div className="flex-1">
+      <div className="flex h-full min-h-0 flex-1 gap-2 overflow-hidden pt-4">
+        <div className="flex w-80 shrink-0 min-h-0 flex-col gap-2 overflow-hidden">
+          <div className="min-h-0 flex-1">
             <RoomParticipantsList />
           </div>
           <div className="shrink-0">
             <RoomCallControls />
           </div>
         </div>
-        <div className="flex flex-col flex-1 overflow-hidden">
-          <div className="p-4 shrink-0">
-            <h2 className="text-lg font-semibold">{room.name}</h2>
-          </div>
-          <RoomAudioRenderer />
-          <div className="flex-1 min-h-0">{children}</div>
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          {children}
         </div>
       </div>
     </RoomProvider>

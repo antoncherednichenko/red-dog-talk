@@ -2,7 +2,7 @@
 
 import { getSessionCookies } from "./getSessionCookies";
 
-type TServerApiInit = Omit<RequestInit, "body"> & { body?: any };
+type TServerApiInit = Omit<RequestInit, "body"> & { body?: unknown };
 
 export const serverApi = async <T>(
   endpoint: string,

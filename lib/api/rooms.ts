@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from "./apiEndpoints";
 import { IProfileDTO } from "./auth";
+import { clientApi } from "./clientApi";
 import { serverApi } from "./serverApi";
 
 export const ROOM_TYPE = {
@@ -49,6 +50,37 @@ export interface IRoomDTO {
   updatedAt: string;
 }
 
+export interface IRoomCallTokenDTO {
+  token: string;
+  url: string;
+  roomName: string;
+  identity: string;
+}
+
+export interface IRoomMessageAuthorDTO {
+  id: string;
+  email: string;
+  name: string;
+}
+
+export interface IRoomMessageDTO {
+  id: string;
+  roomId: string;
+  authorId: string;
+  text: string;
+  createdAt: string;
+  author: IRoomMessageAuthorDTO;
+}
+
+export interface IGetRoomMessagesParams {
+  limit?: number;
+  beforeCreatedAt?: string;
+}
+
+export interface ISendRoomMessageDTO {
+  text: string;
+}
+
 export const createRoom = async (body: ICreateRoomDTO) => {
   return await serverApi<IRoomDTO>(API_ENDPOINTS.Rooms, {
     method: "POST",
@@ -90,4 +122,39 @@ export const leaveRoom = async (roomId: string) => {
   return await serverApi(`${API_ENDPOINTS.Rooms}/${roomId}/leave`, {
     method: "POST",
   });
+};
+
+export const getRoomCallToken = async (roomId: string) => {
+  return await clientApi<IRoomCallTokenDTO>(
+    `${API_ENDPOINTS.Rooms}/${roomId}/call/token`,
+    {
+      method: "POST",
+    },
+  );
+};
+
+export const getRoomMessages = async (
+  roomId: string,
+  params?: IGetRoomMessagesParams,
+) => {
+  return await clientApi<IRoomMessageDTO[]>(
+    `${API_ENDPOINTS.Rooms}/${roomId}/messages`,
+    {
+      method: "GET",
+      query: params,
+    },
+  );
+};
+
+export const sendRoomMessage = async (
+  roomId: string,
+  body: ISendRoomMessageDTO,
+) => {
+  return await clientApi<IRoomMessageDTO>(
+    `${API_ENDPOINTS.Rooms}/${roomId}/messages`,
+    {
+      method: "POST",
+      body,
+    },
+  );
 };

@@ -1,6 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import pluginPrettier from "eslint-plugin-prettier";
 
 /** @type {import("eslint").Linter.FlatConfig[]} */
 
@@ -13,7 +14,7 @@ const eslintConfig = defineConfig([
       "prettier/prettier": "warn",
     },
     plugins: {
-      prettier: require("eslint-plugin-prettier"),
+      prettier: pluginPrettier,
     },
   },
   // Override default ignores of eslint-config-next.
